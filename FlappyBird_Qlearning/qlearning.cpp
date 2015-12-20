@@ -8,40 +8,40 @@
 using namespace std;
 #define max(x,y) ((x)>(y)?(x):(y))
 #define min(x,y) ((x)<(y)?(x):(y))
-#define RangeRand(x,y)((rand()%((y)-(x)+1))+(x))  //È¡µÃ[x,y]µÄËæ»úÕûÊı
+#define RangeRand(x,y)((rand()%((y)-(x)+1))+(x))  //å–å¾—[x,y]çš„éšæœºæ•´æ•°
 
-#define GAMESIZE_W    800  // ÓÎÏ·¿í¶È
-#define GAMESIZE_H    600  // ÓÎÏ·¸ß¶È
+#define GAMESIZE_W    800  // æ¸¸æˆå®½åº¦
+#define GAMESIZE_H    600  // æ¸¸æˆé«˜åº¦
 #define MS_PIPEHEIGHT       420
 #define MS_GROUNDHEIGHT     112
 
-#define MS_STAGEMOVESPEED 150   // ÒÆ¶¯ËÙ¶È
-#define MS_PIPECREATETIME 1.7   // ¹Ü×Ó´´½¨Ê±¼ä¼ä¸ô
-#define MS_PIPEGAPHEIGHT  100   // ¹Ü×Ó¼äÏ¶¸ß¶È
+#define MS_STAGEMOVESPEED 150   // ç§»åŠ¨é€Ÿåº¦
+#define MS_PIPECREATETIME 1.7   // ç®¡å­åˆ›å»ºæ—¶é—´é—´éš”
+#define MS_PIPEGAPHEIGHT  100   // ç®¡å­é—´éš™é«˜åº¦
 #define MS_PIPECREATEYMINRESERVED  0.f
 #define MS_PIPECREATEYMAXRESERVED  100.f
-#define MS_PIPECREATEYMIN (GAMESIZE_H - MS_PIPEHEIGHT - (MS_PIPEGAPHEIGHT / 2.f) + MS_PIPECREATEYMINRESERVED) // ¹Ü×Ó¼äÏ¶ÖĞĞÄ×îĞ¡YÖµ
-#define MS_PIPECREATEYMAX (MS_PIPEHEIGHT + (MS_PIPEGAPHEIGHT / 2.f) - MS_PIPECREATEYMAXRESERVED)              // ¹Ü×Ó¼äÏ¶ÖĞĞÄ×î´óYÖµ
+#define MS_PIPECREATEYMIN (GAMESIZE_H - MS_PIPEHEIGHT - (MS_PIPEGAPHEIGHT / 2.f) + MS_PIPECREATEYMINRESERVED) // ç®¡å­é—´éš™ä¸­å¿ƒæœ€å°Yå€¼
+#define MS_PIPECREATEYMAX (MS_PIPEHEIGHT + (MS_PIPEGAPHEIGHT / 2.f) - MS_PIPECREATEYMAXRESERVED)              // ç®¡å­é—´éš™ä¸­å¿ƒæœ€å¤§Yå€¼
 
 #define BUFSIZE 50
-#define XGRID 6 // X·½ÏòÀëÉ¢»¯Ã¿¸ñÏñËØÊı
-#define YGRID 6 // Y·½ÏòÀëÉ¢»¯Ã¿¸ñÏñËØÊı
-#define GYGRID 40  // Y·½ÏòÀëµØ¾àÀëÀëÉ¢»¯Ã¿¸ñÏñËØÊı 
+#define XGRID 6 // Xæ–¹å‘ç¦»æ•£åŒ–æ¯æ ¼åƒç´ æ•°
+#define YGRID 6 // Yæ–¹å‘ç¦»æ•£åŒ–æ¯æ ¼åƒç´ æ•°
+#define GYGRID 40  // Yæ–¹å‘ç¦»åœ°è·ç¦»ç¦»æ•£åŒ–æ¯æ ¼åƒç´ æ•° 
 
-#define PIPE_GAP (MS_STAGEMOVESPEED*MS_PIPECREATETIME) // ¹Ü×Ó¼ä¸ô
-#define MAX_X_OFFSET PIPE_GAP // X·½Ïò×î´óÆ«ÒÆÁ¿
-#define MIN_X_OFFSET 0   // X·½Ïò×îĞ¡Æ«ÒÆÁ¿
+#define PIPE_GAP (MS_STAGEMOVESPEED*MS_PIPECREATETIME) // ç®¡å­é—´éš”
+#define MAX_X_OFFSET PIPE_GAP // Xæ–¹å‘æœ€å¤§åç§»é‡
+#define MIN_X_OFFSET 0   // Xæ–¹å‘æœ€å°åç§»é‡
 
-#define MAX_Y_OFFSET (0) // Y·½Ïò×î´óÆ«ÒÆÁ¿
-#define MIN_Y_OFFSET (-MS_PIPEGAPHEIGHT)// Y·½Ïò×îĞ¡Æ«ÒÆÁ¿
+#define MAX_Y_OFFSET (0) // Yæ–¹å‘æœ€å¤§åç§»é‡
+#define MIN_Y_OFFSET (-MS_PIPEGAPHEIGHT)// Yæ–¹å‘æœ€å°åç§»é‡
 
-#define MAX_GY_OFFSET 40  // ¾àµØ¾àÀë×î´óÆ«ÒÆÁ¿
-#define MIN_GY_OFFSET 0  // ¾àµØ¾àÀë×îĞ¡Æ«ÒÆÁ¿
+#define MAX_GY_OFFSET 40  // è·åœ°è·ç¦»æœ€å¤§åç§»é‡
+#define MIN_GY_OFFSET 0  // è·åœ°è·ç¦»æœ€å°åç§»é‡
 
 #define X_BIN (int((MAX_X_OFFSET-MIN_X_OFFSET)/XGRID))
 #define Y_BIN (int((MAX_Y_OFFSET-MIN_Y_OFFSET)/YGRID) + 2)
 #define GY_BIN (int((MAX_GY_OFFSET-MIN_GY_OFFSET)/GYGRID) + 1)
-#define BIRD_STATE_NO 2 // ÄñµÄÉúÃü×´Ì¬Êı 
+#define BIRD_STATE_NO 2 // é¸Ÿçš„ç”Ÿå‘½çŠ¶æ€æ•° 
 #define ACTION_NO 2
 
 typedef struct StateSpace{
@@ -225,9 +225,9 @@ int main(int argc, char **argv)
 	}
 	printf("Create communication channel successfully\n");
 	
-	if (ConnectNamedPipe(hPipe, NULL) == FALSE) // µÈ´ı¿Í»§»úµÄÁ¬½Ó
+	if (ConnectNamedPipe(hPipe, NULL) == FALSE) // ç­‰å¾…å®¢æˆ·æœºçš„è¿æ¥
 	{
-		CloseHandle(hPipe); // ¹Ø±Õ¹ÜµÀ¾ä±ú
+		CloseHandle(hPipe); // å…³é—­ç®¡é“å¥æŸ„
 		printf("Flappy bird connect failed\n");
 		return -1;
 	}
@@ -251,6 +251,10 @@ int main(int argc, char **argv)
 		int indx = 0,indy = 0,indgy = 0,birdstate = 1, action = 0;  
 		float maxQnew = 0;  // max Q(s',a)
 		bool dieFlag = 0;
+		mouse_event(MOUSEEVENTF_LEFTDOWN,0,   0,   0,   0);    
+		mouse_event(MOUSEEVENTF_LEFTUP,0,   0,   0,   0);
+		//when restart,you need two clicks to let the game go on.
+		sleep(1);
 		mouse_event(MOUSEEVENTF_LEFTDOWN,0,   0,   0,   0);    
 		mouse_event(MOUSEEVENTF_LEFTUP,0,   0,   0,   0);
 		while(1)
